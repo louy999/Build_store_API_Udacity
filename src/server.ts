@@ -15,6 +15,7 @@ const port = config.port || 3000
 app.use(morgan('common'))
 app.use(express.json())
 app.use(cors())
+
 app.use(helmet())
 
 app.use('/api', routes)
@@ -25,6 +26,7 @@ app.get('/test', (_req: Request, res: Response) => {
 	})
 })
 app.use(errorHandelMiddleware)
+
 app.listen(port, () => {
 	console.log(`server is start with port :${port}`)
 })
