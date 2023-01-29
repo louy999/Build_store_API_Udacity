@@ -6,16 +6,16 @@ class OrdersModel {
 
 	async create(o: Orders): Promise<Orders> {
 		try {
-			const connection = await db.connect()
+			const connect = await db.connect()
 			const sql =
 				'INSERT INTO orders (user_id, status) values ($1, $2) RETURNING *'
 
-			const result = await connection.query(sql, [o.userId, o.status])
+			const result = await connect.query(sql, [o.userId, o.status])
 
 			const order = result.rows[0]
 
-			connection.release()
-
+			connect.release()
+			// return order.rows[0]
 			return {
 				id: order.id,
 				status: order.status,

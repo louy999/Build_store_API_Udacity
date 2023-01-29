@@ -4,15 +4,20 @@ import OrderProductModel from '../../model/order.products'
 const routes = Router()
 const orderProductModel = new OrderProductModel()
 
-routes.post('/:id', async (req: Request, res: Response, next: NextFunction) => {
-	try {
-		const orderProduct = await orderProductModel.create(req.body)
-		res.json({
-			status: 'success',
-			data: {...orderProduct},
-			message: 'Order Product created successfully',
-		})
-	} catch (err) {
-		next(err)
+routes.get(
+	'/:id/products',
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const orderProducts = await orderProductModel.index(
+				req.params.id as unknown as number
+			)
+			res.json({
+				status: 'success',
+				data: {orderProducts},
+				message: 'Order Products retrieved successfully',
+			})
+		} catch (err) {
+			next(err)
+		}
 	}
-})
+)

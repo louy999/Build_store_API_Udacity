@@ -11,7 +11,7 @@ routes.post('/', async (req: Request, res: Response, next) => {
 		res.json({
 			status: 'success',
 			data: {...product},
-			message: 'user created ',
+			message: 'Product created successfully ',
 		})
 	} catch (err) {
 		next(err)
@@ -23,7 +23,7 @@ routes.get('/:id', async (req: Request, res: Response, next) => {
 		res.json({
 			status: 'success',
 			data: {product},
-			message: 'user created ',
+			message: 'Product retrieved successfully',
 		})
 	} catch (err) {
 		next(err)
@@ -35,7 +35,7 @@ routes.get('/', async (req: Request, res: Response, next) => {
 		res.json({
 			status: 'success',
 			data: {product},
-			message: 'user created ',
+			message: 'Products retrieved successfully',
 		})
 	} catch (err) {
 		next(err)

@@ -103,7 +103,7 @@ var UserModel = (function () {
     };
     UserModel.prototype.show = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var sql, connection, result, err_3;
+            var sql, connect, result, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -111,11 +111,11 @@ var UserModel = (function () {
                         sql = 'SELECT * FROM users WHERE id=($1)';
                         return [4, database_1.default.connect()];
                     case 1:
-                        connection = _a.sent();
-                        return [4, connection.query(sql, [id])];
+                        connect = _a.sent();
+                        return [4, connect.query(sql, [id])];
                     case 2:
                         result = _a.sent();
-                        connection.release();
+                        connect.release();
                         return [2, result.rows[0]];
                     case 3:
                         err_3 = _a.sent();
@@ -125,34 +125,38 @@ var UserModel = (function () {
             });
         });
     };
-    UserModel.prototype.authenticate = function (firstName, password) {
+    UserModel.prototype.authenticate = function (first_name, password) {
         return __awaiter(this, void 0, void 0, function () {
-            var connect, sql, result, hashedPassword, isPass, userInfo, error_1;
+            var connect, sql, result, hashedPassword, isPasswordValid, userInfo, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 5, , 6]);
+                        _a.trys.push([0, 8, , 9]);
                         return [4, database_1.default.connect()];
                     case 1:
                         connect = _a.sent();
-                        sql = "SELECT password FROM users WHERE first_name=$1";
-                        return [4, connect.query(sql, [firstName])];
+                        sql = 'SELECT password FROM users WHERE first_name=$1';
+                        return [4, connect.query(sql, [first_name])];
                     case 2:
                         result = _a.sent();
-                        if (!result.rows.length) return [3, 4];
+                        if (!result.rows.length) return [3, 6];
                         hashedPassword = result.rows[0].password;
-                        bcrypt_1.default.compareSync("".concat(password).concat(config_1.default.pepper), hashedPassword);
-                        isPass = (password = result.rows[0]);
-                        if (!isPass) return [3, 4];
-                        return [4, connect.query("SELECT\t id,  first_name, last_name FROM users WHERE first_name=($1)", [firstName])];
+                        isPasswordValid = bcrypt_1.default.compareSync("".concat(password).concat(config_1.default.pepper), hashedPassword);
+                        if (!isPasswordValid) return [3, 4];
+                        return [4, connect.query('SELECT * FROM users WHERE first_name=($1)', [first_name])];
                     case 3:
                         userInfo = _a.sent();
                         return [2, userInfo.rows[0]];
-                    case 4: return [3, 6];
-                    case 5:
+                    case 4: throw new Error("your password is  wrong ");
+                    case 5: return [3, 7];
+                    case 6: throw new Error("your first name is wrong");
+                    case 7:
+                        connect.release();
+                        return [2, null];
+                    case 8:
                         error_1 = _a.sent();
                         throw new Error("".concat(error_1));
-                    case 6: return [2];
+                    case 9: return [2];
                 }
             });
         });

@@ -66,7 +66,7 @@ routes.post('/', function (req, res, next) { return __awaiter(void 0, void 0, vo
                 res.json({
                     status: 'success',
                     data: __assign({}, product),
-                    message: 'user created ',
+                    message: 'Product created successfully ',
                 });
                 return [3, 3];
             case 2:
@@ -89,7 +89,7 @@ routes.get('/:id', function (req, res, next) { return __awaiter(void 0, void 0, 
                 res.json({
                     status: 'success',
                     data: { product: product },
-                    message: 'user created ',
+                    message: 'Product retrieved successfully',
                 });
                 return [3, 3];
             case 2:
@@ -112,7 +112,7 @@ routes.get('/', function (req, res, next) { return __awaiter(void 0, void 0, voi
                 res.json({
                     status: 'success',
                     data: { product: product },
-                    message: 'user created ',
+                    message: 'Products retrieved successfully',
                 });
                 return [3, 3];
             case 2:

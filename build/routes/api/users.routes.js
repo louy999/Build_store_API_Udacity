@@ -68,7 +68,7 @@ routes.post('/', function (req, res, next) { return __awaiter(void 0, void 0, vo
                 res.json({
                     status: 'success',
                     data: __assign({}, user),
-                    message: 'user created ',
+                    message: 'user created successfully',
                 });
                 return [3, 3];
             case 2:
@@ -91,7 +91,7 @@ routes.get('/', function (req, res, next) { return __awaiter(void 0, void 0, voi
                 res.json({
                     status: 'success',
                     data: user,
-                    message: 'user created ',
+                    message: 'users retrieved successfully',
                 });
                 return [3, 3];
             case 2:
@@ -114,7 +114,7 @@ routes.get('/:id', function (req, res, next) { return __awaiter(void 0, void 0, 
                 res.json({
                     status: 'success',
                     data: user,
-                    message: 'user created ',
+                    message: 'user retrieved successfully',
                 });
                 return [3, 3];
             case 2:
@@ -126,20 +126,20 @@ routes.get('/:id', function (req, res, next) { return __awaiter(void 0, void 0, 
     });
 }); });
 routes.post('/auth', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, firstName, password, user, token, err_4;
+    var _a, first_name, password, user, token, err_4;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 2, , 3]);
-                _a = req.body, firstName = _a.firstName, password = _a.password;
-                return [4, userModel.authenticate(firstName, password)];
+                _a = req.body, first_name = _a.first_name, password = _a.password;
+                return [4, userModel.authenticate(first_name, password)];
             case 1:
                 user = _b.sent();
                 token = jsonwebtoken_1.default.sign({ user: user }, config_1.default.tokenSecret);
                 res.json({
                     status: 'success',
                     data: __assign(__assign({}, user), { token: token }),
-                    message: 'user created ',
+                    message: 'user authenticated successfully ',
                 });
                 return [3, 3];
             case 2:

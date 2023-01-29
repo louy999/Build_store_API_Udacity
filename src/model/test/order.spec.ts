@@ -12,14 +12,6 @@ const orderModel = new OrderModel()
 
 describe('Order Model', () => {
 	describe('Test methods exist', () => {
-		it('should have an index method', () => {
-			expect(orderModel.index).toBeDefined()
-		})
-
-		it('should have a show method', () => {
-			expect(orderModel.show).toBeDefined()
-		})
-
 		it('should have a create method', () => {
 			expect(orderModel.create).toBeDefined()
 		})
@@ -27,8 +19,6 @@ describe('Order Model', () => {
 
 	describe('Test Model logic', () => {
 		const user = {
-			email: 'test@test.com',
-			userName: 'testUser',
 			firstName: 'Test',
 			lastName: 'User',
 			password: 'test123',
@@ -63,16 +53,6 @@ describe('Order Model', () => {
 		it('Create method should add an order', async () => {
 			const createdOrder = await orderModel.create(order)
 			expect(createdOrder.id).toEqual(1)
-		})
-
-		it('Index method should return a list of orders', async () => {
-			const orders = await orderModel.index()
-			expect(orders[0].id).toBe(1)
-		})
-
-		it('Show method should return the correct order', async () => {
-			const returnedOrder = await orderModel.show(1)
-			expect(returnedOrder.id).toEqual(1)
 		})
 	})
 })

@@ -14,7 +14,7 @@ routes.post('/', async (req: Request, res: Response, next) => {
 		res.json({
 			status: 'success',
 			data: {...user},
-			message: 'user created ',
+			message: 'user created successfully',
 		})
 	} catch (err) {
 		next(err)
@@ -27,7 +27,7 @@ routes.get('/', async (req: Request, res: Response, next) => {
 		res.json({
 			status: 'success',
 			data: user,
-			message: 'user created ',
+			message: 'users retrieved successfully',
 		})
 	} catch (err) {
 		next(err)
@@ -39,7 +39,7 @@ routes.get('/:id', async (req: Request, res: Response, next) => {
 		res.json({
 			status: 'success',
 			data: user,
-			message: 'user created ',
+			message: 'user retrieved successfully',
 		})
 	} catch (err) {
 		next(err)
@@ -47,13 +47,13 @@ routes.get('/:id', async (req: Request, res: Response, next) => {
 })
 routes.post('/auth', async (req: Request, res: Response, next) => {
 	try {
-		const {firstName, password} = req.body
-		const user = await userModel.authenticate(firstName, password)
+		const {first_name, password} = req.body
+		const user = await userModel.authenticate(first_name, password)
 		const token = jwt.sign({user}, config.tokenSecret as unknown as string)
 		res.json({
 			status: 'success',
 			data: {...user, token},
-			message: 'user created ',
+			message: 'user authenticated successfully ',
 		})
 	} catch (err) {
 		next(err)

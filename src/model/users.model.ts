@@ -2,7 +2,6 @@ import db from '../database'
 import User from '../types/user.types'
 import bcrypt from 'bcrypt'
 import config from '../config'
-import jsonwebtoken from 'jsonwebtoken'
 
 const hashPassword = (password: string) => {
 	const salt = parseInt(config.salt as unknown as string, 10)
@@ -14,7 +13,7 @@ class UserModel {
 	//create
 	async create(u: User): Promise<User> {
 		try {
-			//open connection with DB
+			//open connect with DB
 			const connect = await db.connect()
 			const sql =
 				'INSERT INTO users ( first_name, last_name, password) values ($1, $2, $3) returning id, first_name, last_name'
@@ -24,7 +23,7 @@ class UserModel {
 				u.last_name,
 				hashPassword(u.password),
 			])
-			//release connection
+			//release connect
 			connect.release()
 			//return created user
 			return result.rows[0]
@@ -35,12 +34,12 @@ class UserModel {
 	//get all users
 	async index(): Promise<User[]> {
 		try {
-			//open connection with DB
+			//open connect with DB
 			const connect = await db.connect()
 			const sql = `SELECT * from users`
 			//run query
 			const result = await connect.query(sql)
-			//release connection
+			//release connect
 			connect.release()
 			//return created user
 			return result.rows
@@ -53,37 +52,43 @@ class UserModel {
 		try {
 			const sql = 'SELECT * FROM users WHERE id=($1)'
 
-			const connection = await db.connect()
+			const connect = await db.connect()
 
-			const result = await connection.query(sql, [id])
+			const result = await connect.query(sql, [id])
 
-			connection.release()
+			connect.release()
 			return result.rows[0]
 		} catch (err) {
 			throw new Error(`${err}`)
 		}
 	}
 	//authenticate user
-	async authenticate(firstName, password): Promise<User | null | undefined> {
+	async authenticate(first_name, password): Promise<User | null | undefined> {
 		try {
 			const connect = await db.connect()
-			const sql = `SELECT password FROM users WHERE first_name=$1`
-			const result = await connect.query(sql, [firstName])
+			const sql = 'SELECT password FROM users WHERE first_name=$1'
+			const result = await connect.query(sql, [first_name])
+
 			if (result.rows.length) {
 				const {password: hashedPassword} = result.rows[0]
-				bcrypt.compareSync(`${password}${config.pepper}`, hashedPassword)
-				const isPass = (password = result.rows[0])
-				if (isPass) {
+				const isPasswordValid = bcrypt.compareSync(
+					`${password}${config.pepper}`,
+					hashedPassword
+				)
+				if (isPasswordValid) {
 					const userInfo = await connect.query(
-						`SELECT	 id,  first_name, last_name FROM users WHERE first_name=($1)`,
-						[firstName]
+						'SELECT * FROM users WHERE first_name=($1)',
+						[first_name]
 					)
-
 					return userInfo.rows[0]
-					connect.release()
-					return null
+				} else {
+					throw new Error(`your password is  wrong `)
 				}
+			} else {
+				throw new Error(`your first name is wrong`)
 			}
+			connect.release()
+			return null
 		} catch (error) {
 			throw new Error(`${error}`)
 		}

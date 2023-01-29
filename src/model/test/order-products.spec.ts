@@ -30,8 +30,6 @@ describe('Order Product Model', () => {
 
 	describe('Test Order Products Model logic', () => {
 		const user = {
-			email: 'test@test.com',
-			userName: 'testUser',
 			firstName: 'Test',
 			lastName: 'User',
 			password: 'test123',

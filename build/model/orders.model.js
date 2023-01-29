@@ -45,25 +45,21 @@ var OrdersModel = (function () {
     }
     OrdersModel.prototype.create = function (o) {
         return __awaiter(this, void 0, void 0, function () {
-            var connection, sql, result, order, err_1;
+            var connect, sql, result, order, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
                         return [4, database_1.default.connect()];
                     case 1:
-                        connection = _a.sent();
+                        connect = _a.sent();
                         sql = 'INSERT INTO orders (user_id, status) values ($1, $2) RETURNING *';
-                        return [4, connection.query(sql, [o.userId, o.status])];
+                        return [4, connect.query(sql, [o.userId, o.status])];
                     case 2:
                         result = _a.sent();
                         order = result.rows[0];
-                        connection.release();
-                        return [2, {
-                                id: order.id,
-                                status: order.status,
-                                userId: +order.user_id,
-                            }];
+                        connect.release();
+                        return [2, order.rows[0]];
                     case 3:
                         err_1 = _a.sent();
                         throw new Error("".concat(err_1));
