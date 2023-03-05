@@ -59,7 +59,11 @@ var OrdersModel = (function () {
                         result = _a.sent();
                         order = result.rows[0];
                         connect.release();
-                        return [2, order.rows[0]];
+                        return [2, {
+                                id: order.id,
+                                status: order.status,
+                                userId: +order.user_id,
+                            }];
                     case 3:
                         err_1 = _a.sent();
                         throw new Error("".concat(err_1));

@@ -43,7 +43,7 @@ var database_1 = __importDefault(require("../database"));
 var OrderProductModel = (function () {
     function OrderProductModel() {
     }
-    OrderProductModel.prototype.create = function (op) {
+    OrderProductModel.prototype.index = function (orderId) {
         return __awaiter(this, void 0, void 0, function () {
             var connect, sql, result, err_1;
             return __generator(this, function (_a) {
@@ -53,19 +53,15 @@ var OrderProductModel = (function () {
                         return [4, database_1.default.connect()];
                     case 1:
                         connect = _a.sent();
-                        sql = 'INSERT INTO order_products (quantity, order_id, product_id) values ($1, $2, $3) RETURNING *';
-                        return [4, connect.query(sql, [
-                                op.quantity,
-                                op.orderId,
-                                op.productId,
-                            ])];
+                        sql = "SELECT o.id AS id, op.order_id, op.product_id, JSON_AGG(JSONB_BUILD_OBJECT('productId', p.id, 'name', p.name,'category', p.category, 'price', p.price, 'quantity', op.quantity)) AS products FROM orders AS o LEFT JOIN order_products AS op ON o.id = op.order_id LEFT JOIN products AS p ON op.product_id = p.id WHERE o.id=$1 GROUP BY o.id, op.order_id, op.product_id";
+                        return [4, connect.query(sql, [orderId])];
                     case 2:
                         result = _a.sent();
                         connect.release();
                         return [2, result.rows[0]];
                     case 3:
                         err_1 = _a.sent();
-                        throw new Error("".concat(err_1));
+                        throw new Error("Error at retrieving products in order: ".concat(orderId, " ").concat(err_1));
                     case 4: return [2];
                 }
             });

@@ -11,9 +11,7 @@ class OrderProductModel {
 			connect.release()
 			return result.rows[0]
 		} catch (err) {
-			throw new Error(
-				`Error at retrieving products in order: ${orderId} ${err.message}`
-			)
+			throw new Error(`Error at retrieving products in order: ${orderId} ${err}`)
 		}
 	}
 }

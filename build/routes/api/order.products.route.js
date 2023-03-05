@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -54,19 +43,19 @@ var express_1 = require("express");
 var order_products_1 = __importDefault(require("../../model/order.products"));
 var routes = (0, express_1.Router)();
 var orderProductModel = new order_products_1.default();
-routes.post('/:id', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var orderProduct, err_1;
+routes.get('/:id/products', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var orderProducts, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4, orderProductModel.create(req.body)];
+                return [4, orderProductModel.index(req.params.id)];
             case 1:
-                orderProduct = _a.sent();
+                orderProducts = _a.sent();
                 res.json({
                     status: 'success',
-                    data: __assign({}, orderProduct),
-                    message: 'Order Product created successfully',
+                    data: { orderProducts: orderProducts },
+                    message: 'Order Products retrieved successfully',
                 });
                 return [3, 3];
             case 2:
